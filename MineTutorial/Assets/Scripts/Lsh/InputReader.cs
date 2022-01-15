@@ -12,14 +12,14 @@ namespace WaveFunctionColleps
 {
 	public class InputReader : IInputReader<TileBase>
 	{
-		private TileBase _inputTileBase;
+		private Tilemap _inputTileMap;
 
 		// ==================================================
 		// InputReader() : 생성자
 		// ==================================================
-		public InputReader( TileBase inputTileBase )
+		public InputReader( Tilemap inputTileMap )
 		{
-			_inputTileBase = inputTileBase;
+			_inputTileMap = inputTileMap;
 		}
 
 		// ==================================================
@@ -28,7 +28,6 @@ namespace WaveFunctionColleps
 		public IValue<TileBase>[ ][ ] ReadInputToGrid()
 		{
 			TileBase[][] tileBaseGrid = ReadInputTileMap();
-
 			TileBaseValue[ ][ ] tileBaseValues = null;
 
 			if ( tileBaseGrid != null ) {
@@ -41,6 +40,7 @@ namespace WaveFunctionColleps
 				}
 			}
 
+			// 이렇게 캐스팅 되는 것이 신기하네.
 			return tileBaseValues;
 		}
 
@@ -49,7 +49,23 @@ namespace WaveFunctionColleps
 		// ==================================================
 		private TileBase[ ][ ] ReadInputTileMap()
 		{
-			throw new NotImplementedException();
+			InputParameters inputParameters = new InputParameters( _inputTileMap );
+			return CreateTileBaseGrid( inputParameters );
+		}
+
+
+		private TileBase[ ][ ] CreateTileBaseGrid( InputParameters inputParameters )
+		{
+			TileBase[ ][ ] gridOfInputTiles = null;
+			gridOfInputTiles = MyCollectionExtension.CreateJaggedArray<TileBase[ ][ ]>( inputParameters.Height , inputParameters.Width );
+
+			for ( int row = 0 ; row < inputParameters.Height ; row++ ) {
+				for ( int col = 0 ; col < inputParameters.Width ; col++ ) {
+					gridOfInputTiles[ row ][ col ] = inputParameters.StackOfTiles.Dequeue().tileBase;
+				}
+			}
+
+			return gridOfInputTiles;
 		}
 	}
 }

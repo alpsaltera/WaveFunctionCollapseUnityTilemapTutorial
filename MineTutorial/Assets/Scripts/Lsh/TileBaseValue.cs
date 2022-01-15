@@ -18,21 +18,35 @@ public class TileBaseValue : IValue<TileBase>
 		this.tileBase = tileBase;
 	}
 
-	public TileBase Value => throw new System.NotImplementedException();
+	#region IValue 
+	// ==================================================
+	// TileBaseValue() : 생성자.
+	// ==================================================
+	public TileBase Value => tileBase;
 
 
 	public bool Equals( IValue<TileBase> x , IValue<TileBase> y )
 	{
-		throw new System.NotImplementedException();
+		return x == y;
 	}
 
 	public bool Equals( IValue<TileBase> other )
 	{
-		throw new System.NotImplementedException();
+		return this.Value == other.Value;
 	}
 
 	public int GetHashCode( IValue<TileBase> obj )
 	{
-		throw new System.NotImplementedException();
+		return obj.GetHashCode();
 	}
+	#endregion
+
+	// ==================================================
+	// override GetHashCode() : 내부 해쉬코드 생성자 오버라이드
+	// ==================================================
+	public override int GetHashCode()
+	{
+		return this.tileBase.GetHashCode();
+	}
+
 }
